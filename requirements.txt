@@ -1,0 +1,19 @@
+# EventHorizon dependencies.
+#
+# IMPORTANT: every dependency here is OPTIONAL. The core tarpit, the replay
+# tool, the stdlib dashboard, and the FULL pytest suite all run with ZERO
+# third-party packages (Python 3.11+ standard library only). If `pip install`
+# fails because the build host is offline, the tarpit still runs: OpenTelemetry
+# is imported behind a graceful no-op shim (see eventhorizon/telemetry.py).
+#
+# Install these to enable real OpenTelemetry trace export to the collector:
+opentelemetry-api>=1.20.0
+opentelemetry-sdk>=1.20.0
+opentelemetry-exporter-otlp-proto-grpc>=1.20.0
+
+# Optional, only if you want to run async tests via the official plugin instead
+# of the bundled stdlib shim in tests/conftest.py:
+# pytest-asyncio>=0.23.0
+
+# Test runner (pytest itself is the only thing strictly needed to run tests):
+pytest>=7.0.0

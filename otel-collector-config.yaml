@@ -1,0 +1,39 @@
+# OpenTelemetry Collector config for EventHorizon.
+# Receives OTLP spans from the tarpit and forwards them to Jaeger, while also
+# logging them to the collector's stdout for quick debugging.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 2s
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 256
+    spike_limit_mib: 64
+
+exporters:
+  # Pretty-print spans to the collector log (handy in `docker compose logs`).
+  debug:
+    verbosity: detailed
+  # Forward to Jaeger via OTLP (Jaeger all-in-one accepts OTLP on 4317).
+  otlp/jaeger:
+    endpoint: jaeger:4317
+    tls:
+      insecure: true
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [debug, otlp/jaeger]
+  telemetry:
+    logs:
+      level: info

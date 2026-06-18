@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+sessions.jsonl
+*.jsonl
+dashboard.html
+.DS_Store
